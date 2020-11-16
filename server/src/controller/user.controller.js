@@ -19,4 +19,8 @@ userController.auth = async(req, res) => {
     res.status(200).send(await user.find());
 }
 
+userController.create = async(req, res) => {
+    const {} = req.body;
+}
+
 module.exports = userController;
