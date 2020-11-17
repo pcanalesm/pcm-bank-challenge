@@ -5,10 +5,11 @@ const bcryptjs = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 
-//Model Definition
+//Definicion del Modelo
 const userSchema = new Schema({
     dni: String,
-    name: String,
+    firstname: String,
+    lastname: String,
     mail: String,
     password: String
 });
