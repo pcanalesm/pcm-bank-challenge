@@ -14,9 +14,14 @@ userController.auth = async(req, res) => {
         });
     
     const isMatch = await currentUser.comparePassword(password);
-    
+    if(!isMatch)
+        return res.status(401).send({
+            message: 'Credentials error'
+        });
 
-    res.status(200).send(await user.find());
+    currentUser = currentUser.toObject();
+    delete currentUser.password;
+    res.status(200).send();
 }
 
 userController.create = async(req, res) => {
