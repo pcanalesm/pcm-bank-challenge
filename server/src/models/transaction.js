@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const transactionSchema = new Schema({
-    post_acount: { type: Schema.Types.ObjectId, ref: 'account' },
-    get_acount: { type: Schema.Types.ObjectId, ref: 'account' },
+    destiny_user: { type: Schema.Types.ObjectId, ref: 'user' },
     date: Date,
     amount: Number,
-    remaining_amount: Number
+    remaining_amount: Number,
+    type: String
 });
 
 module.exports = mongoose.model('transaction', transactionSchema);

@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-6 mx-auto">
+
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="header-image-signup"></div>
+                <mat-card-title>Registro</mat-card-title>
+            </mat-card-header>
+            <form [formGroup]="signupForm" (submit)="onSubmit()">
+                <mat-card-content>
+
+
+
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Rut</mat-label>
+
+                            <input matInput formControlName="dni" type="text" name="rut" placeholder="Rut" autofocus>
+                            <mat-error *ngIf="!f.dni.errors.required')
+              && f.dni.errors.rutValidator">Ingrese un rut válido</mat-error>
+                            <mat-error *ngIf="f.dni.errors.required
+              && f.dni.errors.rutValidator">El rut es requerido</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Contraseña</mat-label>
+                            <input matInput type="password" formControlName="password" name="password"
+                                placeholder="Contraseña">
+                            <mat-error *ngIf="!signupForm.get('password').hasError('required')
+              && signupForm.hasError('notMatch')">Contraseñas no coinciden</mat-error>
+                            <mat-error *ngIf="signupForm.get('password').hasError('required')
+              && !signupForm.hasError('notMatch')">La contraseña es requerida</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Confirmar Contraseña</mat-label>
+                            <input matInput type="password" formControlName="password_confirm" name="password_confirm"
+                                placeholder="Confirmar Contraseña">
+                            <mat-error *ngIf="!signupForm.get('password_confirm').hasError('required')
+              && signupForm.hasError('notMatch')">Contraseñas no coinciden</mat-error>
+                            <mat-error *ngIf="signupForm.get('password_confirm').hasError('required')
+              && !signupForm.hasError('notMatch')">La Confirmación de Contraseña es requerida</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput type="text" formControlName="firstname" name="firstname" placeholder="Nombre">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Apellido</mat-label>
+                            <input matInput type="text" formControlName="lastname" name="lastname" placeholder="Apellido">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Correo</mat-label>
+                            <input matInput formControlName="mail" type="text" name="lastname" placeholder="Apellido">
+                            <mat-error *ngIf="signupForm.get('mail').hasError('email')
+              &&!signupForm.get('mail').hasError('required')">Ingrese un email válido</mat-error>
+
+                            <mat-error *ngIf="!signupForm.get('mail').hasError('email')
+              && signupForm.get('mail').hasError('required')">El email es requerido</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" [disabled]="signupForm.invalid" type="submit" >
+                        Registrar </button>
+
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+</div>
