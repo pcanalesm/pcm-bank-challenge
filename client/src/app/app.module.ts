@@ -24,6 +24,7 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { AlertComponent } from './components/shared/alert/alert.component';
 import { AccountComponent } from './components/user/account/account.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

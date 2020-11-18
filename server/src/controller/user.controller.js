@@ -1,6 +1,7 @@
 const user = require('../models/user');
 
 
+
 const userController = {}
 
 userController.auth = async(req, res) => {
@@ -22,6 +23,19 @@ userController.auth = async(req, res) => {
     currentUser = currentUser.toObject();
     delete currentUser.password;
     res.status(200).send();
+}
+
+userController.getUserByDni = async(req, res) => {
+     const dni = req.params.dni;
+
+     let currentUser = await user.findOne({ dni: dni });
+
+     if(currentUser) {
+         currentUser = currentUser.toObject();
+         delete currentUser.password;
+     }
+
+     res.status(200).send(currentUser);
 }
 
 userController.create = async(req, res) => {

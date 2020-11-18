@@ -6,20 +6,19 @@
                 <div mat-card-avatar class="header-image-signup"></div>
                 <mat-card-title>Registro</mat-card-title>
             </mat-card-header>
-            <form [formGroup]="signupForm" (submit)="onSubmit()">
+            <form [formGroup]="signupForm" (submit)="onSubmit()" #formDirective="ngForm">
                 <mat-card-content>
-
-
-
                     <div class="form-group">
                         <mat-form-field appearance="standard">
                             <mat-label>Rut</mat-label>
 
                             <input matInput formControlName="dni" type="text" name="rut" placeholder="Rut" autofocus>
-                            <mat-error *ngIf="!f.dni.errors.required')
-              && f.dni.errors.rutValidator">Ingrese un rut válido</mat-error>
-                            <mat-error *ngIf="f.dni.errors.required
-              && f.dni.errors.rutValidator">El rut es requerido</mat-error>
+                            <mat-error *ngIf="f.dni.errors && !f.dni.errors.required
+                            && f.dni.errors.isRutValid && !f.dni.errors.isAvailable">Ingrese un rut válido</mat-error>
+                            <mat-error *ngIf="f.dni.errors && f.dni.errors.required
+                            && !f.dni.errors.isAvailable && !f.dni.errors.isRutValid">El rut es requerido</mat-error>
+                            <mat-error *ngIf="f.dni.errors && !f.dni.errors.required
+                            && f.dni.errors.isAvailable && !f.dni.errors.isRutValid">El rut ya esta registrado</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
@@ -27,10 +26,7 @@
                             <mat-label>Contraseña</mat-label>
                             <input matInput type="password" formControlName="password" name="password"
                                 placeholder="Contraseña">
-                            <mat-error *ngIf="!signupForm.get('password').hasError('required')
-              && signupForm.hasError('notMatch')">Contraseñas no coinciden</mat-error>
-                            <mat-error *ngIf="signupForm.get('password').hasError('required')
-              && !signupForm.hasError('notMatch')">La contraseña es requerida</mat-error>
+                            <mat-error *ngIf="f.password.errors && f.password.errors.required">La contraseña es requerida</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
@@ -38,38 +34,43 @@
                             <mat-label>Confirmar Contraseña</mat-label>
                             <input matInput type="password" formControlName="password_confirm" name="password_confirm"
                                 placeholder="Confirmar Contraseña">
-                            <mat-error *ngIf="!signupForm.get('password_confirm').hasError('required')
-              && signupForm.hasError('notMatch')">Contraseñas no coinciden</mat-error>
-                            <mat-error *ngIf="signupForm.get('password_confirm').hasError('required')
-              && !signupForm.hasError('notMatch')">La Confirmación de Contraseña es requerida</mat-error>
+                            <mat-error *ngIf="f.password_confirm.errors && !f.password_confirm.errors.required
+              && f.password_confirm.errors.isMatch">Contraseñas no coinciden</mat-error>
+                            <mat-error *ngIf="f.password_confirm.errors  && f.password_confirm.errors.required
+              && !f.password_confirm.errors.isMatch">La Confirmación de Contraseña es requerida</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
                         <mat-form-field appearance="standard">
                             <mat-label>Nombre</mat-label>
                             <input matInput type="text" formControlName="firstname" name="firstname" placeholder="Nombre">
+                            <mat-error *ngIf="f.firstname.errors && f.firstname.errors.required">El nombre es requerido</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
                         <mat-form-field appearance="standard">
                             <mat-label>Apellido</mat-label>
                             <input matInput type="text" formControlName="lastname" name="lastname" placeholder="Apellido">
+                            <mat-error *ngIf="f.lastname.errors && f.lastname.errors.required">El apellido es requerido</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
                         <mat-form-field appearance="standard">
                             <mat-label>Correo</mat-label>
                             <input matInput formControlName="mail" type="text" name="lastname" placeholder="Apellido">
-                            <mat-error *ngIf="signupForm.get('mail').hasError('email')
-              &&!signupForm.get('mail').hasError('required')">Ingrese un email válido</mat-error>
+                       
+                            <mat-error *ngIf="f.mail.errors && f.mail.errors.email
+              &&!f.mail.errors.required">Ingrese un email válido</mat-error>
 
-                            <mat-error *ngIf="!signupForm.get('mail').hasError('email')
-              && signupForm.get('mail').hasError('required')">El email es requerido</mat-error>
+                            <mat-error *ngIf="f.mail.errors && !f.mail.errors.mail
+              && f.mail.errors.required">El email es requerido</mat-error>
+              
                         </mat-form-field>
+                        
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-raised-button color="primary" [disabled]="signupForm.invalid" type="submit" >
+                    <button mat-raised-button color="primary"  type="submit" >
                         Registrar </button>
 
                 </mat-card-actions>

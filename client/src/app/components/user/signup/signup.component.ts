@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { checkPasswords, rutValidate } from 'src/app/services/validators/signup.validator';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/user/auth.service';
+import {  SignUpValidator} from 'src/app/services/validators/signup.validator';
+
 
 @Component({
   selector: 'app-signup',
@@ -11,31 +14,40 @@ export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  @ViewChild('formDirective') private formDirective: NgForm;
+  
+  constructor(private fb: FormBuilder,
+             private authService: AuthService,
+             private signUpValidator: SignUpValidator) {
   }
 
   get f() { return this.signupForm.controls; }
 
   ngOnInit(): void {
+  
+
     this.signupForm = this.fb.group({
-      mail: [ null , [Validators.required, Validators.email]],
-      password: [ null , [Validators.required]],
-      password_confirm: [ null , [Validators.required]],
-      firstname: [ null , [Validators.required]],
-      lastname: [ null , [Validators.required]],
-      dni: [ null , [Validators.required, rutValidate()]]
+      mail: [ '' , [Validators.required, Validators.email]],
+      password: [ '' , [Validators.required]],
+      password_confirm: [ '' , [Validators.required]],
+      firstname: [ '' , [Validators.required]],
+      lastname: [ '' , [Validators.required]],
+      dni: [ '' , [Validators.required],[this.signUpValidator.AvailableDni.bind(this)]]
+    }, {
+      validators: [ this.signUpValidator.Match('password', 'password_confirm'), 
+                    this.signUpValidator.RutValidate('dni') ]
     });
   }
 
-  cleanForm() {
-
-  }
-
-  validateDni() {
-  }
-
   onSubmit() {
-    console.log(this.signupForm.value);
+     console.log(this.signupForm.controls.dni.errors);
+     
+     if(this.signupForm.invalid) {
+       return;
+     }
+     
+     this.authService.signUp(this.signupForm, this.formDirective);     
+     
   }
 
 
