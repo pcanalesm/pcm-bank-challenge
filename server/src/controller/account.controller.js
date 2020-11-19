@@ -13,8 +13,7 @@ accountController.addAmount = async(req, res) => {
     const user = req.decoded;
     const { amount } = req.body;
 
-
-    let currentAccount = await  accountModel.find({
+    let currentAccount = await  accountModel.findOne({
         user: user._id
     });
 
@@ -22,7 +21,7 @@ accountController.addAmount = async(req, res) => {
         date: moment().format(),
         type: TransactionType.DEPOSIT,
         amount: amount,
-        remaining_amount: newAccount.amount 
+        remaining_amount:  Number(currentAccount.amount) + Number(amount)
     });
 
 
@@ -41,8 +40,6 @@ accountController.addAmount = async(req, res) => {
             new: true
         });
 
-
-
     res.status(200).send(newAccount);
 }
 
@@ -53,7 +50,7 @@ accountController.removeAmount = async(req, res) => {
     const { amount } = req.body;
 
 
-    let currentAccount = await  accountModel.find({
+    let currentAccount = await  accountModel.findOne({
         user: user._id
     });
 
@@ -61,7 +58,7 @@ accountController.removeAmount = async(req, res) => {
         date: moment().format(),
         type: TransactionType.ORDER,
         amount: amount,
-        remaining_amount: newAccount.amount 
+        remaining_amount: Number(currentAccount.amount) - Number(amount)
     });
 
 
@@ -74,6 +71,120 @@ accountController.removeAmount = async(req, res) => {
             $push: 
             {
                 transactions: newTransaction
+            }
+        }, 
+        {
+            new: true
+        });
+
+
+
+    res.status(200).send(newAccount);
+}
+
+accountController.getStatusAccount = async(req, res) => {
+
+    let account = await accountModel.findOne({
+        user: req.decoded._id
+    }).populate({path: 'transactions', options: { sort: { 'date': -1 } }}).populate('user');
+
+    account = account.toObject();
+    delete account.user.password;
+    res.status(200).send(account);
+
+}
+
+
+accountController.validateDestinyAccount = async(req, res) => {
+
+    const dni = req.params.dni;
+
+    const user = await userModel.findOne({
+        dni: dni
+    });
+
+    if(!user)
+    {
+        return res.status(200).send(false);
+    }
+
+    let account = await accountModel.findOne({
+        user: user._id
+    });
+
+    if(!account) {
+        account = await accountModel.create({
+            amount: 0,
+            user: user._id
+        });
+    }
+
+    res.status(200).send(true);
+}
+
+
+accountController.transfer = async(req, res) => {
+
+    const user = req.decoded;
+    const { amount, destiny_dni } = req.body;
+
+
+    let currentAccount = await  accountModel.findOne({ user: user._id });
+
+    let destinyUser = await userModel.findOne({ dni: destiny_dni });
+
+    if(!destinyUser) {
+        return res.status(404).send({
+            message: 'User Destiny Not Found'
+        });
+    }
+
+    let destiny_account = await accountModel.findOne({
+            user: destinyUser._id
+    });
+
+    const newTransaction = await transactionModel.create({
+        date: moment().format(),
+        type: TransactionType.TRANSFER,
+        amount: amount,
+        remaining_amount: (currentAccount.amount - amount),
+        destiny_user: destinyUser._id
+    });
+
+
+    const newTransactionDeposit = await transactionModel.create({
+        date: moment().format(),
+        type: TransactionType.TRANSFER_DESPOSIT,
+        amount: amount,
+        remaining_amount: (destiny_account.amount + amount),
+        origin_user: user._id
+    });
+
+
+    let newAccount = await accountModel.findByIdAndUpdate(currentAccount._id, 
+        { 
+            $inc: 
+            {
+                 amount: -amount
+            },
+            $push: 
+            {
+                transactions: newTransaction
+            }
+        }, 
+        {
+            new: true
+        });
+
+    let destinyAccount = await accountModel.findByIdAndUpdate(destiny_account._id, 
+        { 
+            $inc: 
+            {
+                 amount: amount
+            },
+            $push: 
+            {
+                transactions: newTransactionDeposit
             }
         }, 
         {

@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-3 mx-auto">
+
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <mat-icon class="nav-icon">note_add</mat-icon>
+                </div>
+
+                <mat-card-title>Retiro de Saldo</mat-card-title>
+            </mat-card-header>
+            <form [formGroup]="orderForm" (submit)="onSubmit()" #formDirective="ngForm">
+                <mat-card-content>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Monto a Girar</mat-label>
+
+                            <input matInput formControlName="amount" type="text" name="amount" placeholder="Monto"
+                                autofocus>
+                            <mat-error *ngIf="f.amount.errors && !f.amount.errors.orderAvailable 
+              && f.amount.errors.pattern && !f.amount.errors.required">Ingrese una cifra númerica</mat-error>
+                            <mat-error *ngIf="f.amount.errors && !f.amount.errors.orderAvailable 
+                            && !f.amount.errors.pattern && f.amount.errors.required">
+                                El monto es requerido</mat-error>
+                            <mat-error *ngIf="f.amount.errors && f.amount.errors.orderAvailable 
+                                && !f.amount.errors.pattern && !f.amount.errors.required">
+                                El valor no puede exceder el saldo total</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="this.orderForm.invalid">
+                        Girar </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+</div>

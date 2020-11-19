@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-md-3 mx-auto">
+
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <mat-icon class="nav-icon">monetization_on</mat-icon>
+                </div>
+
+                <mat-card-title>Transferencia a Terceros</mat-card-title>
+            </mat-card-header>
+            <form [formGroup]="trxForm" (submit)="onSubmit()" #formDirective="ngForm">
+                <mat-card-content>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Destinatario</mat-label>
+
+                            <input matInput formControlName="destiny_dni" type="text" name="destiny_dni"
+                                placeholder="Rut" autofocus>
+                            <mat-error *ngIf="f.destiny_dni.errors && 
+                f.destiny_dni.errors.isRutValid &&
+                !f.destiny_dni.errors.required && !f.destiny_dni.errors.destinyAvailable
+                && !f.destiny_dni.errors.sameAccount">
+                                Ingrese un Rut válido
+                            </mat-error>
+                            <mat-error *ngIf="f.destiny_dni.errors && 
+                !f.destiny_dni.errors.isRutValid &&
+                !f.destiny_dni.errors.required && f.destiny_dni.errors.destinyAvailable
+                && !f.destiny_dni.errors.sameAccount">
+                                La cuenta no existe</mat-error>
+                            <mat-error *ngIf="f.destiny_dni.errors && 
+                !f.destiny_dni.errors.isRutValid &&
+                 f.destiny_dni.errors.required && !f.destiny_dni.errors.destinyAvailable
+                 && !f.destiny_dni.errors.sameAccount">
+                                El monto es requerido</mat-error>
+                            <mat-error *ngIf="f.destiny_dni.errors && 
+                                !f.destiny_dni.errors.isRutValid &&
+                                 !f.destiny_dni.errors.required && !f.destiny_dni.errors.destinyAvailable
+                                 && f.destiny_dni.errors.sameAccount">
+                                La misma cuenta no puede ser destino</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Monto a Transferir</mat-label>
+
+                            <input matInput formControlName="amount" type="text" name="amount" placeholder="Monto">
+                            <mat-error *ngIf="f.amount.errors && !f.amount.errors.orderAvailable 
+                                && f.amount.errors.pattern && !f.amount.errors.required">Ingrese una cifra númerica
+                            </mat-error>
+                            <mat-error *ngIf="f.amount.errors && !f.amount.errors.orderAvailable 
+                                              && !f.amount.errors.pattern && f.amount.errors.required">
+                                El monto es requerido</mat-error>
+                            <mat-error *ngIf="f.amount.errors && f.amount.errors.orderAvailable 
+                                                  && !f.amount.errors.pattern && !f.amount.errors.required">
+                                El valor no puede exceder el saldo total</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="this.trxForm.invalid">
+                        Transferir </button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+</div>

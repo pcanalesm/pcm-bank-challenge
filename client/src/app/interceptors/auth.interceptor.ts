@@ -19,17 +19,16 @@ export class AuthInterceptor implements HttpInterceptor {
                 private alertService: AlertService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-        const authToken = this.authService.getToken();
-        req = req.clone({
-            setHeaders: {
-                Authorization: 'Bearer ' + authToken
-            }
-        });
-        return next.handle(req).pipe(
-            catchError(error => {
-                if (this.excludesUrl.indexOf(this.router.url) === -1) {
+        if (this.excludesUrl.indexOf(req.url) === -1) {
+            const authToken = this.authService.getToken();
+            req = req.clone({
+                setHeaders: {
+                    Authorization: 'Bearer ' + authToken
+                }
+            });
+            return next.handle(req).pipe(
+                catchError(error => {
                     let errorMsg = '';
-
                     if (error instanceof ErrorEvent) {
                         errorMsg = 'Error al procesar la solicitud';
                     }
@@ -46,8 +45,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
                     this.alertService.error(errorMsg);
                     return throwError(errorMsg);
-                }
-            })
-        );
+
+                })
+            );
+        }  else {
+           return next.handle(req);
+        }
     }
 }

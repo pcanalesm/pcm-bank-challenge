@@ -1,13 +1,42 @@
 <mat-toolbar color="primary" >
   
+  <button mat-icon-button>
+    <mat-icon *ngIf="isLoggedIn | async" (click)="sidenav.toggle()">menu</mat-icon>
+   </button>
  
     <span class="style-spacer"></span>
 
-    <button mat-button (click)="goRegister()">Registro</button>
-    <button mat-button>Inicio de Sesión</button>
+    <button mat-button *ngIf="!(isLoggedIn | async)"   routerLink="/signup">Registro</button>
+    <button mat-button *ngIf="!(isLoggedIn | async)"  routerLink="/signin">Inicio de Sesión</button>
 
-    <button mat-raised-button color="primary">Logout</button>
+    <button mat-raised-button *ngIf="isLoggedIn | async" (click)="onLogout()" color="primary">
+      <mat-icon >exit_to_app</mat-icon>
+      Logout</button>
   
 
   
   </mat-toolbar>
+
+  <app-alert></app-alert>
+  
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav [mode]="isLargeScreen() ? 'side' : 'over'">
+      <mat-nav-list>
+  
+        <a mat-list-item [routerLink]="'/account'"><mat-icon class="nav-icon">article</mat-icon> Movimientos de Cuenta </a>
+        <a mat-list-item [routerLink]="'/transaction'"><mat-icon class="nav-icon">monetization_on</mat-icon>
+        Transferencia a Terceros</a>
+        <a mat-list-item [routerLink]="'/deposit'"><mat-icon class="nav-icon">note_add</mat-icon>
+          Carga de Saldo</a>
+          <a mat-list-item [routerLink]="'/order'"><mat-icon class="nav-icon">note_add</mat-icon>
+            Retiro de Saldo</a>
+  
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div style="height: 88vh; width: 99%;">
+  
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

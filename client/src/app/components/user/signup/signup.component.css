@@ -6,3 +6,8 @@
 mat-form-field {
     width: 80%;
 }
+
+.nav-icon{ 
+  color: #00008B;
+  margin-right: 10px;
+}

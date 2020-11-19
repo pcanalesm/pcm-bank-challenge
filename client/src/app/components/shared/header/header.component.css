@@ -1,3 +1,15 @@
 .style-spacer {
     flex: 1 1 auto;
   }
+
+
+  .nav-icon{ 
+    color: #00008B;
+    margin-right: 10px;
+  }
+
+  mat-sidenav{
+    width:250px ;
+    background-color: white;
+
+  }

@@ -1,6 +1,7 @@
 const express = require('express');
 const database = require('./database/db');
 const userRoute = require('./routes/user.route');
+const accountRoute = require('./routes/account.route');
 const { PORT, CORS_ORIGIN  } = require('./config/config');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -20,6 +21,7 @@ database.connect();
 //Rutas
 
 app.use('/api', userRoute);
+app.use('/api', accountRoute);
 
 
 app.listen(PORT, () => {

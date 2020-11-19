@@ -3,28 +3,36 @@
 
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar class="header-image-signin"></div>
+              <div mat-card-avatar>
+                <mat-icon class="nav-icon">login</mat-icon>
+            </div>
                 <mat-card-title>Ingreso al Portal</mat-card-title>
             </mat-card-header>
+            <form [formGroup]="signinForm" (submit)="onSubmit()">
             <mat-card-content>
             <div class="form-group">
                 <mat-form-field appearance="standard">
                 <mat-label>Rut</mat-label>
                
-              <input matInput  type="text"  name="rut" placeholder="Rut" autofocus>
+              <input matInput formControlName="dni" type="text"  name="rut" placeholder="Rut" autofocus>
+              <mat-error *ngIf="f.dni.errors && !f.dni.errors.required
+                            && f.dni.errors.isRutValid">Ingrese un rut válido</mat-error>
+                            <mat-error *ngIf="f.dni.errors && f.dni.errors.required && !f.dni.errors.isRutValid">El rut es requerido</mat-error>
             </mat-form-field>
             </div>
             <div class="form-group">
                 <mat-form-field appearance="standard">
                     <mat-label>Contraseña</mat-label>
-              <input matInput type="password" name="password" placeholder="Contraseña">
+              <input matInput type="password" formControlName="password" name="password" placeholder="Contraseña">
+              <mat-error *ngIf="f.password.errors && f.password.errors.required">La contraseña es requerida</mat-error>
               </mat-form-field> 
             </div>
         </mat-card-content>
             <mat-card-actions>
-            <button mat-raised-button color="primary">
+            <button mat-raised-button color="primary" type="submit" [disabled]="this.signinForm.invalid" >
               Ingresar </button>
             </mat-card-actions>
+          </form>
         </mat-card>
     </div>
   </div>

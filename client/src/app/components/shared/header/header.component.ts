@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +9,25 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  isLoggedIn: Observable<boolean>;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
-  goRegister() {
-    this.router.navigate(['signup']);
+  onLogout() {
+    this.authService.logout();
   }
+
+  isLargeScreen() {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (width > 720) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
 }

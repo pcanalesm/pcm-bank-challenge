@@ -3,5 +3,6 @@ module.exports = {
     SALT_FACTOR: process.env.SALT_FACTOR || 10,
     PORT: process.env.PORT || 5000,
     CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:4200',
-    JWT_SECRET: process.env.JWT_SECRET || '169bfb13d457-41df-af61-fff1d77fd9b0'
+    JWT_SECRET: process.env.JWT_SECRET || 'bed764f2-0a54-4844-a91d-2394ece42a4e',
+    SESSION_EXPIRE: process.env.SESSION_EXPIRE || '1h'
 }

@@ -3,7 +3,9 @@
 
         <mat-card>
             <mat-card-header>
-                <div mat-card-avatar class="header-image-signup"></div>
+                <div mat-card-avatar>
+                    <mat-icon class="nav-icon">person</mat-icon>
+                </div>
                 <mat-card-title>Registro</mat-card-title>
             </mat-card-header>
             <form [formGroup]="signupForm" (submit)="onSubmit()" #formDirective="ngForm">
@@ -70,7 +72,7 @@
                     </div>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-raised-button color="primary"  type="submit" >
+                    <button mat-raised-button color="primary" [disabled]="this.signupForm.invalid"  type="submit" >
                         Registrar </button>
 
                 </mat-card-actions>

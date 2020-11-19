@@ -11,6 +11,8 @@ module.exports = {
 
         });
 
+        mongoose.set('useFindAndModify', false);
+
         mongoose.connection.on('error', (err) => {
             console.log('Failed ', err);
 

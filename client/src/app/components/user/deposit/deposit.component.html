@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-md-3 mx-auto">
+
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon class="nav-icon">note_add</mat-icon>
+        </div>
+
+        <mat-card-title>Carga de Saldo</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="depositForm" (submit)="onSubmit()" #formDirective="ngForm">
+        <mat-card-content>
+          <div class="form-group">
+            <mat-form-field appearance="standard">
+              <mat-label>Monto a Depositar</mat-label>
+
+              <input matInput formControlName="amount" type="text" name="amount" placeholder="Monto" autofocus>
+              <mat-error *ngIf="f.amount.errors && !f.amount.errors.required
+                            && f.amount.errors.pattern">Ingrese una cifra númerica
+              </mat-error>
+              <mat-error *ngIf="f.amount.errors && f.amount.errors.required && !f.amount.errors.pattern">
+                El monto es requerido</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit" [disabled]="this.depositForm.invalid">
+            Depositar </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</div>
