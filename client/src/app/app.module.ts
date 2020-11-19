@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 //
 
@@ -31,6 +32,8 @@ import { TransactionComponent } from './components/user/transaction/transaction.
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { DepositComponent } from './components/user/deposit/deposit.component';
 import { OrderComponent } from './components/user/order/order.component';
+import { LoaderComponent } from './components/shared/loader/loader.component';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 
 
 @NgModule({
@@ -43,7 +46,8 @@ import { OrderComponent } from './components/user/order/order.component';
     AccountComponent,
     TransactionComponent,
     DepositComponent,
-    OrderComponent
+    OrderComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -62,12 +66,18 @@ import { OrderComponent } from './components/user/order/order.component';
     MatListModule,
     MatSidenavModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
       multi: true
     }
   ],

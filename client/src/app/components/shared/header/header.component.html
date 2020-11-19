@@ -6,8 +6,8 @@
  
     <span class="style-spacer"></span>
 
-    <button mat-button *ngIf="!(isLoggedIn | async)"   routerLink="/signup">Registro</button>
-    <button mat-button *ngIf="!(isLoggedIn | async)"  routerLink="/signin">Inicio de Sesión</button>
+    <button mat-raised-button color="primary" *ngIf="!(isLoggedIn | async)"   routerLink="/signup">Registro</button>
+    <button mat-raised-button color="primary" *ngIf="!(isLoggedIn | async)"  routerLink="/signin">Inicio de Sesión</button>
 
     <button mat-raised-button *ngIf="isLoggedIn | async" (click)="onLogout()" color="primary">
       <mat-icon >exit_to_app</mat-icon>
@@ -28,13 +28,13 @@
         Transferencia a Terceros</a>
         <a mat-list-item [routerLink]="'/deposit'"><mat-icon class="nav-icon">note_add</mat-icon>
           Carga de Saldo</a>
-          <a mat-list-item [routerLink]="'/order'"><mat-icon class="nav-icon">note_add</mat-icon>
+          <a mat-list-item [routerLink]="'/order'"><mat-icon class="nav-icon">assignment</mat-icon>
             Retiro de Saldo</a>
   
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-      <div style="height: 88vh; width: 99%;">
+      <div style="height: 88vh; width: 100%;">
   
         <router-outlet></router-outlet>
       </div>

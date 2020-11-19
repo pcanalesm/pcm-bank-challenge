@@ -28,6 +28,8 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             return next.handle(req).pipe(
                 catchError(error => {
+                    console.log(error);
+                    
                     let errorMsg = '';
                     if (error instanceof ErrorEvent) {
                         errorMsg = 'Error al procesar la solicitud';
@@ -35,12 +37,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
                     if (error instanceof HttpErrorResponse) {
                         if (error.status === 401) {
-                            this.router.navigate(['signin']);
+                            this.authService.logout();
                             return;
                         }
-                        if (error.status === 400) {
+                       
                             errorMsg = 'Ha ocurrido un error en el Servidor';
-                        }
+                        
                     }
 
                     this.alertService.error(errorMsg);

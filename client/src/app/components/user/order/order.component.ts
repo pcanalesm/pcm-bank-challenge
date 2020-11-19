@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { StatusService } from 'src/app/services/account/status.service';
 import { TransactionService } from 'src/app/services/account/transaction.service';
 import { TransactionValidator } from 'src/app/services/validators/transaction.validator';
 
@@ -15,7 +16,8 @@ export class OrderComponent implements OnInit {
 
   constructor(private transactionService: TransactionService,
               private fb: FormBuilder,
-              private transactionValidator: TransactionValidator) { }
+              private transactionValidator: TransactionValidator,
+              private accountService: StatusService) { }
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({

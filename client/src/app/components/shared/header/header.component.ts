@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/user/auth.service';
 
@@ -11,6 +12,8 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn: Observable<boolean>;
 
+  @ViewChild('sidenav') sidenav: MatSidenav;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -18,6 +21,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
+    if(this.sidenav.opened)
+        this.sidenav.toggle();
     this.authService.logout();
   }
 

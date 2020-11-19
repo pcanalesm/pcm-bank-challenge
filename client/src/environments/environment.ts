@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  PROD_API_URL: 'http://localhost:5000/api',
+  PROD_API_URL: 'https://pcm-bank-challenge.herokuapp.com/api',
   production: false
 };
 
