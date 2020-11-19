@@ -72,6 +72,14 @@ export class AuthService {
     this.router.navigate(['']);
   }
 
+  chekLogin() {
+    this.getSession().subscribe(session => {
+        if (session) {
+            this.router.navigate(['account']);
+        }
+    });
+  }
+
   getUserByDni(dni: string) {
     return this.http.get(`${AppConfig.API_URL}/user/dni/get/${dni}`);
   }

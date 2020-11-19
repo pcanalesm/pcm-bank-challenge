@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const accountModel = require('../models/account');
 const jwt = require('jsonwebtoken');
 const { SESSION_EXPIRE, JWT_SECRET } = require('../config/config');
+const nodemailer = require('nodemailer');
 
 
 
@@ -42,27 +43,26 @@ userController.auth = async (req, res) => {
 
     }
 }
-userController.getSessionUser = async(req, res) => {
-    try
-    {
+userController.getSessionUser = async (req, res) => {
+    try {
         let token = req.headers['access_token'] || req.headers['authorization'];
-        if(token) {
+        if (token) {
             if (token.startsWith('Bearer ')) {
-      
+
                 token = token.slice(7, token.length);
             }
-            jwt.verify(token, JWT_SECRET , (err, decoded) => {
+            jwt.verify(token, JWT_SECRET, (err, decoded) => {
                 if (err) {
                     return res.status(200).send(null);
                 } else {
-                  req.decoded = decoded;
+                    req.decoded = decoded;
                 }
             });
         }
         else {
             return res.status(200).send(null);
         }
-       
+
         res.status(200).send(req.decoded);
     }
     catch (error) {
@@ -123,8 +123,13 @@ userController.create = async (req, res) => {
             user: newUser._id
         });
 
-        newUser = newUser.toObject();
-        delete newUser.password;
+        if (newUser) {
+            newUser = newUser.toObject();
+            delete newUser.password;
+            sendMail(newUser);
+        }
+
+        
         res.status(200).send(newUser);
 
     } catch (error) {
@@ -133,6 +138,33 @@ userController.create = async (req, res) => {
         });
 
     }
+}
+
+function sendMail(newUser) {
+    var transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        secureConnection: false,
+        port: process.env.SMTP_PORT,
+        auth: {
+            user: process.env.MAIL,
+            pass: process.env.MAIL_PASS 
+        }
+    });
+
+    var mailOptions = {
+        from: `${process.env.EMAIL_TITLE} 
+                <${process.env.MAIL}>`,
+        to: newUser.mail,
+        subject: process.env.EMAIL_SUBJECT,
+        text: '',
+        html: process.env.EMAIL_HTML
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        }
+    });
 }
 
 module.exports = userController;

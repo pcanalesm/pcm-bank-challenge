@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { SALT_FACTOR } = require('../config/config');
 const Schema = mongoose.Schema;
 
 
@@ -14,14 +13,14 @@ const userSchema = new Schema({
 });
 
 // Pre Save metodo para encriptación de password
-userSchema.pre('save', async function(next) {
+userSchema.pre('save',  function(next) {
     try
     {   
         var user = this;
         if(!user.isModified('password')) return next();
-
-        const salt = await bcrypt.genSaltSync(SALT_FACTOR);
-        user.password = await bcrypt.hashSync(user.password, salt);
+        
+        const salt =  bcrypt.genSaltSync(10);
+        user.password =  bcrypt.hashSync(user.password, salt);
 
         next();
 
@@ -31,8 +30,8 @@ userSchema.pre('save', async function(next) {
 })
 
 //Metodo para comparar password
-userSchema.methods.comparePassword = async function(password) {
-    const match = await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword =  function(password) {
+    const match =  bcrypt.compareSync(password, this.password);
     return match;
 }
 

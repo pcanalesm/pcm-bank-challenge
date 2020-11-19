@@ -14,7 +14,11 @@ export class SigninComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
-              private signinValidator: UserValidator) { }
+              private signinValidator: UserValidator) {
+
+                this.authService.chekLogin();
+
+               }
 
   ngOnInit(): void {
     this.signinForm = this.fb.group({

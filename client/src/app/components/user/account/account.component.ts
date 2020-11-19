@@ -15,7 +15,7 @@ export class AccountComponent implements OnInit, AfterViewInit {
 
   trxDataSource: MatTableDataSource<Transaction>;
   account: AccountUser;
-  displayedColumns: string[] = [ 'type', 'date', 'amount', 'remaining_amount'];
+  displayedColumns: string[] = [ 'type', 'date', 'amount', 'order', 'destiny', 'remaining_amount'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -30,6 +30,8 @@ export class AccountComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.accountService.getAccountData().subscribe(acc => {
+      console.log(acc);
+      
       this.trxDataSource = new MatTableDataSource(acc.transactions);
       this.account = acc;
       this.trxDataSource.paginator = this.paginator;
